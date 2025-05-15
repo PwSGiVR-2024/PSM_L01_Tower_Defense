@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class AreaAttackController : MonoBehaviour
@@ -14,33 +14,33 @@ public class AreaAttackController : MonoBehaviour
     private bool attackExecuted = false;
     private float maxRaycastDistance = 100f;
 
-    // Czas cooldownu
-    public float cooldownTime = 5f; // Czas cooldownu w sekundach
-    private float currentCooldownTime = 0f; // Aktualny czas cooldownu
+    // Cooldown
+    public float cooldownTime = 5f;
+    private float currentCooldownTime = 0f;
 
-    // UI Elements
-    public Text cooldownText; // Tekst do wyœwietlania licznika
-    public Button attackButton; // Przycisk ataku
+    // UI
+    public Text cooldownText;
+    public Button attackButton;
+
+    // Nazwa obiektu sfery w prefabie
+    public string sphereName = "AttackRangeSphere"; // Upewnij siÄ™, Å¼e dziecko prefab ma takÄ… nazwÄ™!
 
     void Update()
     {
-        // Sprawdzamy, czy cooldown jeszcze nie min¹³
+        // Cooldown odliczanie
         if (currentCooldownTime > 0f)
         {
-            currentCooldownTime -= Time.deltaTime; // Zmniejszamy czas cooldownu
-            cooldownText.text = Mathf.Ceil(currentCooldownTime).ToString(); // Wyœwietlamy czas w sekundach
-
-            // Blokujemy przycisk, gdy cooldown trwa
+            currentCooldownTime -= Time.deltaTime;
+            cooldownText.text = Mathf.Ceil(currentCooldownTime).ToString();
             attackButton.interactable = false;
         }
         else
         {
-            // Gdy cooldown minie, przycisk jest aktywny
             attackButton.interactable = true;
-            cooldownText.text = ""; // Czyœcimy tekst, gdy cooldown siê skoñczy
+            cooldownText.text = "";
         }
 
-        // Obs³uga celowania i ataku
+        // ObsÅ‚uga celowania i ataku
         if (isAiming)
         {
             FollowMouse();
@@ -49,14 +49,14 @@ public class AreaAttackController : MonoBehaviour
             {
                 ExecuteAttack();
                 attackExecuted = true;
-                currentCooldownTime = cooldownTime; // Resetujemy cooldown po ataku
+                currentCooldownTime = cooldownTime;
             }
         }
     }
 
     public void StartAiming()
     {
-        if (!isAiming)
+        if (!isAiming && currentCooldownTime <= 0f)
         {
             isAiming = true;
             attackExecuted = false;
@@ -73,7 +73,7 @@ public class AreaAttackController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, maxRaycastDistance, groundLayer))
         {
             Vector3 targetPosition = hit.point;
-            targetPosition.y += 0.5f; // Podnosimy kó³ko nad ziemiê
+            targetPosition.y += 0.5f; // Podniesienie kÃ³Å‚ka nad ziemiÄ™
             aimingCircle.transform.position = targetPosition;
         }
     }
