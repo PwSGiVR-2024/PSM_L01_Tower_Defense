@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemyHealth : MonoBehaviour
 {
     public float health = 100f;
+    public int damageToBase = 1; // <<< Nowe pole
 
     private Renderer rend;
     private Color originalColor;
