@@ -14,7 +14,7 @@ public class GameOverMenu : MonoBehaviour
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f; // Wznawiamy grê
-        SceneManager.LoadScene("MainMenu"); // Podaj nazwê sceny menu g³ównego
+        SceneManager.LoadScene("Main_Menu"); // Podaj nazwê sceny menu g³ównego
     }
 
     // Metoda do wyjœcia z gry (dzia³a po buildzie)
