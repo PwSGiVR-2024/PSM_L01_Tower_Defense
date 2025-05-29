@@ -5,11 +5,13 @@ public class EnemyController : MonoBehaviour
 {
    public Camera cam;
    public NavMeshAgent agent;
+   private GameObject[] spawnSpots;
    private GameObject target;
 
    private void Start()
    {
        target = GameObject.FindGameObjectWithTag("TARGET");
+       // spawnSpots=GameObject.
    }
 
    private void Update()
