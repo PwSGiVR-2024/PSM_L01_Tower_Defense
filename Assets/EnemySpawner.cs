@@ -1,13 +1,23 @@
 using UnityEngine;
 using System.Collections.Generic; // Required for using Lists
 
+public class statsDto
+{
+    public float damage { get; set; }
+    public float hp { get; set; }
+    public bool qty { get; set; }
+}
+
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject objectToSpawn;
     public Camera mainCamera;
     public LayerMask hitLayers;
-    public string spawnSpotLayerName = "SpawnSpotLayer"; // Editable layer name in Inspector
+    public string spawnSpotLayerName = "SpawnSpotLayer"; 
     private List<GameObject> spawnSpots;
+	int damage=10;
+	int hp=10;
+	int enemyQtyPerWave=10;
 
     void Start()
     {
@@ -38,10 +48,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            // Find all GameObjects in the scene
             GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
-
-            // Filter GameObjects by layer
             foreach (GameObject go in allGameObjects)
             {
                 if (go.layer == spawnSpotLayer)
@@ -49,32 +56,37 @@ public class EnemySpawner : MonoBehaviour
                     spawnSpots.Add(go);
                 }
             }
-
-            // Optional: Log the found spawn spots
+        }
+		Debug.Log(spawnSpots[0].name);
+		statsDto stats= new statsDto();
+		stats.qty=3;
+		spawnWave(stats);
+    }
+	
+	void spawnWave(statsDto stats){
+			
+			
             if (spawnSpots.Count > 0)
             {
                 Debug.Log($"Found {spawnSpots.Count} spawn spots on layer '{spawnSpotLayerName}':");
-                foreach (GameObject spot in spawnSpots)
-                {
-                    Debug.Log("- " + spot.name);
-                }
+				for( int i=0;i<stats.qty;i++){
+					GameObject spawnSpot = spawnSpots[i%spawnSpots.length];
+					
+					Instantiate(objectToSpawn,spawnSpot.position, Quaternion.identity);
+
+				}
             }
             else
             {
                 Debug.LogWarning($"EnemySpawner: No GameObjects found on layer '{spawnSpotLayerName}'.");
             }
-        }
-		Debug.Log(spawnSpots[0].name);
-    }
-
+	}
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo; // Variable to store information about what the ray hits
-
-            // Ensure hitLayers is not 0 (Nothing) or -1 (Everything) if you intend to filter by specific layers for spawning
+            RaycastHit hitInfo; 
             if (Physics.Raycast(ray, out hitInfo, 100f, hitLayers))
             {
                 Debug.Log("Ray hit: " + hitInfo.collider.gameObject.name + " at point: " + hitInfo.point + " on layer: " + LayerMask.LayerToName(hitInfo.collider.gameObject.layer));
