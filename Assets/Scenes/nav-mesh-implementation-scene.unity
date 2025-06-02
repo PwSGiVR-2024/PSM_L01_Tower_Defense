@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 66980540}
   - component: {fileID: 66980539}
   m_Layer: 9
-  m_Name: Plane
+  m_Name: MSPAWNSPOT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -836,11 +836,8 @@ MonoBehaviour:
   mainCamera: {fileID: 93835531}
   hitLayers:
     serializedVersion: 2
-    m_Bits: 256
-  targetLayerName: SpawnSpotLayer
-  targetLayers:
-    serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
+  spawnSpotLayerName: SpawnSpotLayer
 --- !u!4 &1318323499
 Transform:
   m_ObjectHideFlags: 0
