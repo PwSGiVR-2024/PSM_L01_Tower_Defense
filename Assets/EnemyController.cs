@@ -11,6 +11,8 @@ public class EnemyController : MonoBehaviour
    private void Start()
    {
        target = GameObject.FindGameObjectWithTag("TARGET");
+       
+       agent.destination = target.transform.position;
        // spawnSpots=GameObject.
    }
 
@@ -25,7 +27,6 @@ public class EnemyController : MonoBehaviour
       //       agent.SetDestination(hit.point);
       //    }
       // }
-      agent.destination = target.transform.position;
    }
 
    void OnTriggerEnter(Collider other)
