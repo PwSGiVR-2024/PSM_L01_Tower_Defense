@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour
     public string spawnSpotLayerName = "SpawnSpotLayer";
     
     // NEW: Add a public field for the delay so you can change it in the Inspector.
-    public float spawnDelay = 0.5f; 
+    public float spawnDelay = 0.3f; 
 
     private List<GameObject> spawnSpots;
     int damage = 10;
@@ -65,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
 
         Debug.Log(spawnSpots.Count > 0 ? spawnSpots[0].name : "No spawn spots found.");
         statsDto stats = new statsDto();
-        stats.qty = 15;
+        stats.qty = 50;
 
         // CHANGED: We now call StartCoroutine to run the spawn logic over time.
         StartCoroutine(SpawnWave(stats));
