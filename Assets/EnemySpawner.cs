@@ -1,11 +1,12 @@
 using UnityEngine;
-using System.Collections.Generic; // Required for using Lists
+using System.Collections; // Required for using Coroutines (IEnumerator)
+using System.Collections.Generic;
 
 public class statsDto
 {
     public float damage { get; set; }
     public float hp { get; set; }
-    public bool qty { get; set; }
+    public int qty { get; set; } // Corrected from bool
 }
 
 public class EnemySpawner : MonoBehaviour
@@ -13,11 +14,15 @@ public class EnemySpawner : MonoBehaviour
     public GameObject objectToSpawn;
     public Camera mainCamera;
     public LayerMask hitLayers;
-    public string spawnSpotLayerName = "SpawnSpotLayer"; 
+    public string spawnSpotLayerName = "SpawnSpotLayer";
+    
+    // NEW: Add a public field for the delay so you can change it in the Inspector.
+    public float spawnDelay = 0.5f; 
+
     private List<GameObject> spawnSpots;
-	int damage=10;
-	int hp=10;
-	int enemyQtyPerWave=10;
+    int damage = 10;
+    int hp = 10;
+    int enemyQtyPerWave = 10;
 
     void Start()
     {
@@ -57,36 +62,47 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-		Debug.Log(spawnSpots[0].name);
-		statsDto stats= new statsDto();
-		stats.qty=3;
-		spawnWave(stats);
-    }
-	
-	void spawnWave(statsDto stats){
-			
-			
-            if (spawnSpots.Count > 0)
-            {
-                Debug.Log($"Found {spawnSpots.Count} spawn spots on layer '{spawnSpotLayerName}':");
-				for( int i=0;i<stats.qty;i++){
-					GameObject spawnSpot = spawnSpots[i%spawnSpots.length];
-					
-					Instantiate(objectToSpawn,spawnSpot.position, Quaternion.identity);
 
-				}
-            }
-            else
+        Debug.Log(spawnSpots.Count > 0 ? spawnSpots[0].name : "No spawn spots found.");
+        statsDto stats = new statsDto();
+        stats.qty = 15;
+
+        // CHANGED: We now call StartCoroutine to run the spawn logic over time.
+        StartCoroutine(SpawnWave(stats));
+    }
+
+    // CHANGED: The function is now an IEnumerator to allow for pausing.
+    IEnumerator SpawnWave(statsDto stats)
+    {
+        if (spawnSpots.Count > 0)
+        {
+            Debug.Log($"Found {spawnSpots.Count} spawn spots on layer '{spawnSpotLayerName}'. Starting wave...");
+            for (int i = 0; i < stats.qty; i++)
             {
-                Debug.LogWarning($"EnemySpawner: No GameObjects found on layer '{spawnSpotLayerName}'.");
+                // Corrected property from .length to .Count
+                GameObject spawnSpot = spawnSpots[i % spawnSpots.Count];
+
+                // Corrected property from .position to .transform.position
+                Instantiate(objectToSpawn, spawnSpot.transform.position, Quaternion.identity);
+
+                // NEW: This is the magic line. It pauses the coroutine here for the specified duration.
+                // The rest of the game continues to run normally during this pause.
+                yield return new WaitForSeconds(spawnDelay);
             }
-	}
+            Debug.Log("Wave finished spawning.");
+        }
+        else
+        {
+            Debug.LogWarning($"EnemySpawner: No GameObjects found on layer '{spawnSpotLayerName}'.");
+        }
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo; 
+            RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, 100f, hitLayers))
             {
                 Debug.Log("Ray hit: " + hitInfo.collider.gameObject.name + " at point: " + hitInfo.point + " on layer: " + LayerMask.LayerToName(hitInfo.collider.gameObject.layer));
