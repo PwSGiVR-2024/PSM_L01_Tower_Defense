@@ -5,17 +5,22 @@ TagManager:
   serializedVersion: 3
   tags:
   - TARGET
+  - Map
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
-  - 
   - EnemyLayer
   - walkableSpaceLayer
   - SpawnSpotLayer
+  - Map
+  - 
+  - 
+  - 
   - 
   - 
   - 
