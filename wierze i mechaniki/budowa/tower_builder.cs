@@ -1,31 +1,34 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 public class tower_builder : MonoBehaviour
 {
-    public int towerHeight = 5;
-    public float cubeHeight = 1f;
-    private GameObject menu;
+    [SerializeField] private int towerCost = 100;
+    [SerializeField] private GameObject towerPrefab;
+    [SerializeField] private Transform buildPosition;
+    [SerializeField] private build_controller buildController;
+
+    [SerializeField] private GameObject towerMenu;
 
     public void BuildTower()
     {
-        GameObject cubePrefab = Resources.Load<GameObject>("Cube");
-        menu = GameObject.FindGameObjectWithTag("Tower_Menu");
-
-        if (cubePrefab == null)
+        if (PlayerWallet.Instance != null && PlayerWallet.Instance.SpendMoney(towerCost))
         {
-            Debug.LogError("Nie znaleziono prefab'a 'Cube' w folderze Resources!");
-            return;
+            if (buildController != null)
+            {
+                buildController.Build(towerPrefab, buildPosition);
+                Debug.Log("Budowa zakoñczona sukcesem.");
+            }
+            else
+            {
+                Debug.LogError("Brak przypisanego build_controller!");
+            }
+
+            if (towerMenu != null)
+                towerMenu.SetActive(false);
         }
-
-        for (int i = 0; i < towerHeight; i++)
+        else
         {
-            Vector3 spawnPosition = new Vector3(0, i * cubeHeight, 0);
-            Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
-            menu.SetActive(false);
+            Debug.Log("Nie masz wystarczaj¹cej iloœci pieniêdzy.");
         }
     }
-
-
 }
