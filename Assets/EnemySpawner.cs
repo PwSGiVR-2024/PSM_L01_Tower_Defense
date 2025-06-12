@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     public string spawnSpotLayerName = "SpawnSpotLayer";
     
     private List<Transform> spawnSpots;
-    private List<GameObject> activeEnemies = new List<GameObject>(); // List to track living enemies
+    private List<GameObject> activeEnemies = new List<GameObject>(); 
     private int currentWaveIndex = 0;
 
     void Start()
@@ -30,7 +30,6 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        // Start the main level progression process
         StartCoroutine(RunLevel());
     }
     
@@ -55,15 +54,12 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // The main coroutine that manages the entire level
     private IEnumerator RunLevel()
     {
         Debug.Log($"Level Starting: {currentLevel.levelName}");
 
-        // Iterate through all waves defined in the level asset
         foreach (var wave in currentLevel.waves)
         {
-            // Wait for the delay before the wave starts
             if (wave.delayBeforeWave > 0)
             {
 				Debug.Log($"waves in the level: {currentLevel.waves.Count}");
@@ -71,10 +67,9 @@ public class EnemySpawner : MonoBehaviour
             }
             
             Debug.Log($"Wave Starting: {wave.waveName}");
-            // Start spawning the current wave
-            yield return StartCoroutine(SpawnWave(wave));
             
-            // Wait until all spawned enemies are defeated
+            yield return StartCoroutine(SpawnWave(wave));
+      
             yield return new WaitForSeconds(wave.delayBeforeNextWave);
             
             Debug.Log($"Wave {wave.waveName} cleared!");
@@ -82,23 +77,17 @@ public class EnemySpawner : MonoBehaviour
         }
         
         Debug.Log($"LEVEL {currentLevel.levelName} COMPLETE!");
-        // Here you can show a victory screen or load the next level
     }
-
-    // Coroutine to spawn a single wave
     private IEnumerator SpawnWave(Wave wave)
     {
             Debug.Log($"spawning wave: {wave.waveName} ");
-        // Iterate through all enemy groups in the wave
         foreach (var group in wave.enemyGroups)
         {
-            // Start spawning a specific group
 			yield return StartCoroutine(SpawnEnemyGroup(group));
 			
         }
     }
     
-    // Coroutine to spawn a single group of enemies
     private IEnumerator SpawnEnemyGroup(EnemyGroup group)
     {
         if (group.enemyPrefab == null)
@@ -110,20 +99,14 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log($"Spawning group: {group.count}x {group.enemyPrefab.name}");
         for (int i = 0; i < group.count; i++)
         {
-            // Select a random spawn point
             Transform spawnPoint = spawnSpots[Random.Range(0, spawnSpots.Count)];
             
-            // Create the enemy instance
             GameObject newEnemy = Instantiate(group.enemyPrefab, spawnPoint.position, spawnPoint.rotation);
             
-            // Add the enemy to the active list for tracking
             activeEnemies.Add(newEnemy);
-            
-            // Optionally, pass a reference of the spawner to the enemy, so it can report its death
             EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
          
 
-            // Wait for the interval before spawning the next enemy in the group
             if (group.spawnInterval > 0)
             {
                 yield return new WaitForSeconds(group.spawnInterval);
@@ -131,7 +114,6 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // This method should be called by enemies when they are defeated
     public void OnEnemyDefeated(GameObject enemy)
     {
         if (activeEnemies.Contains(enemy))
