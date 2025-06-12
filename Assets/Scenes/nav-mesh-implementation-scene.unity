@@ -1280,13 +1280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1fc098dc54916409b224b2059a89b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSpawn: {fileID: 8819405772511101188, guid: 19758a48f12063f449f789d407b9364b, type: 3}
-  mainCamera: {fileID: 93835531}
-  hitLayers:
-    serializedVersion: 2
-    m_Bits: 512
+  currentLevel: {fileID: 11400000, guid: fe425a4b458eda24aa37cbff5ec731c6, type: 2}
   spawnSpotLayerName: SpawnSpotLayer
-  spawnDelay: 0.5
 --- !u!4 &1318323499
 Transform:
   m_ObjectHideFlags: 0
