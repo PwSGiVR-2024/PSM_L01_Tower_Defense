@@ -637,7 +637,6 @@ GameObject:
   - component: {fileID: 143797428}
   - component: {fileID: 143797427}
   - component: {fileID: 143797426}
-  - component: {fileID: 143797429}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -706,18 +705,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &143797429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143797425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4f0aade7fec6f469e031cf123b7ccc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &151679320
 GameObject:
   m_ObjectHideFlags: 0
@@ -2334,10 +2321,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2ec28f8184022384cbd14a2bbe5ce265, type: 3}
-  m_Resource: {fileID: 8300000, guid: 2ec28f8184022384cbd14a2bbe5ce265, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 48eecad60409c0d47975440ccfe7a9a2, type: 3}
+  m_Resource: {fileID: 8300000, guid: 48eecad60409c0d47975440ccfe7a9a2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.22
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 1
   Mute: 0
