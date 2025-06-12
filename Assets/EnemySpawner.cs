@@ -1,117 +1,142 @@
 using UnityEngine;
-using System.Collections; // Required for using Coroutines (IEnumerator)
+using System.Collections;
 using System.Collections.Generic;
-
-public class statsDto
-{
-    public float damage { get; set; }
-    public float hp { get; set; }
-    public int qty { get; set; } // Corrected from bool
-}
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject objectToSpawn;
-    public Camera mainCamera;
-    public LayerMask hitLayers;
+    [Header("Level Settings")]
+    public LevelDefinition currentLevel;
+
+    [Header("Spawn Points")]
     public string spawnSpotLayerName = "SpawnSpotLayer";
     
-    // NEW: Add a public field for the delay so you can change it in the Inspector.
-    public float spawnDelay = 0.3f; 
-
-    private List<GameObject> spawnSpots;
-    int damage = 10;
-    int hp = 10;
-    int enemyQtyPerWave = 10;
+    private List<Transform> spawnSpots;
+    private List<GameObject> activeEnemies = new List<GameObject>(); // List to track living enemies
+    private int currentWaveIndex = 0;
 
     void Start()
     {
-        if (mainCamera == null)
+        InitializeSpawnSpots();
+        
+        if (currentLevel == null)
         {
-            mainCamera = Camera.main;
-        }
-
-        if (mainCamera == null)
-        {
-            Debug.LogError("EnemySpawner: Main Camera not found! Please assign it in the inspector or ensure a Camera is tagged 'MainCamera'.");
-            enabled = false;
+            Debug.LogError("Level Definition not assigned in the spawner!");
             return;
         }
 
-        if (objectToSpawn == null)
+        if (spawnSpots.Count == 0)
         {
-            Debug.LogError("EnemySpawner: Object To Spawn not assigned! Please assign it in the inspector.");
-            enabled = false;
+            Debug.LogError("No spawn spots found on layer: " + spawnSpotLayerName);
             return;
         }
-        spawnSpots = new List<GameObject>();
+
+        // Start the main level progression process
+        StartCoroutine(RunLevel());
+    }
+    
+    private void InitializeSpawnSpots()
+    {
+        spawnSpots = new List<Transform>();
         int spawnSpotLayer = LayerMask.NameToLayer(spawnSpotLayerName);
 
         if (spawnSpotLayer == -1)
         {
-            Debug.LogWarning($"EnemySpawner: Layer '{spawnSpotLayerName}' does not exist. Please ensure the layer is created in the Unity Editor (Edit > Project Settings > Tags and Layers).");
+            Debug.LogWarning($"Layer '{spawnSpotLayerName}' does not exist. Please create it in Project Settings > Tags and Layers.");
+            return;
         }
-        else
+
+        GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
+        foreach (GameObject go in allGameObjects)
         {
-            GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
-            foreach (GameObject go in allGameObjects)
+            if (go.layer == spawnSpotLayer)
             {
-                if (go.layer == spawnSpotLayer)
-                {
-                    spawnSpots.Add(go);
-                }
+                spawnSpots.Add(go.transform);
             }
-        }
-
-        Debug.Log(spawnSpots.Count > 0 ? spawnSpots[0].name : "No spawn spots found.");
-        statsDto stats = new statsDto();
-        stats.qty = 50;
-
-        // CHANGED: We now call StartCoroutine to run the spawn logic over time.
-        StartCoroutine(SpawnWave(stats));
-    }
-
-    // CHANGED: The function is now an IEnumerator to allow for pausing.
-    IEnumerator SpawnWave(statsDto stats)
-    {
-        if (spawnSpots.Count > 0)
-        {
-            Debug.Log($"Found {spawnSpots.Count} spawn spots on layer '{spawnSpotLayerName}'. Starting wave...");
-            for (int i = 0; i < stats.qty; i++)
-            {
-                // Corrected property from .length to .Count
-                GameObject spawnSpot = spawnSpots[i % spawnSpots.Count];
-
-                // Corrected property from .position to .transform.position
-                Instantiate(objectToSpawn, spawnSpot.transform.position, Quaternion.identity);
-
-                // NEW: This is the magic line. It pauses the coroutine here for the specified duration.
-                // The rest of the game continues to run normally during this pause.
-                yield return new WaitForSeconds(spawnDelay);
-            }
-            Debug.Log("Wave finished spawning.");
-        }
-        else
-        {
-            Debug.LogWarning($"EnemySpawner: No GameObjects found on layer '{spawnSpotLayerName}'.");
         }
     }
 
-    void Update()
+    // The main coroutine that manages the entire level
+    private IEnumerator RunLevel()
     {
-        if (Input.GetMouseButtonDown(0))
+        Debug.Log($"Level Starting: {currentLevel.levelName}");
+
+        // Iterate through all waves defined in the level asset
+        foreach (var wave in currentLevel.waves)
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, 100f, hitLayers))
+            // Wait for the delay before the wave starts
+            if (wave.delayBeforeWave > 0)
             {
-                Debug.Log("Ray hit: " + hitInfo.collider.gameObject.name + " at point: " + hitInfo.point + " on layer: " + LayerMask.LayerToName(hitInfo.collider.gameObject.layer));
-                Instantiate(objectToSpawn, hitInfo.point, Quaternion.identity);
+				Debug.Log($"waves in the level: {currentLevel.waves.Count}");
+                yield return new WaitForSeconds(wave.delayBeforeWave);
             }
-            else
+            
+            Debug.Log($"Wave Starting: {wave.waveName}");
+            // Start spawning the current wave
+            yield return StartCoroutine(SpawnWave(wave));
+            
+            // Wait until all spawned enemies are defeated
+            yield return new WaitForSeconds(wave.delayBeforeNextWave);
+            
+            Debug.Log($"Wave {wave.waveName} cleared!");
+            currentWaveIndex++;
+        }
+        
+        Debug.Log($"LEVEL {currentLevel.levelName} COMPLETE!");
+        // Here you can show a victory screen or load the next level
+    }
+
+    // Coroutine to spawn a single wave
+    private IEnumerator SpawnWave(Wave wave)
+    {
+            Debug.Log($"spawning wave: {wave.waveName} ");
+        // Iterate through all enemy groups in the wave
+        foreach (var group in wave.enemyGroups)
+        {
+            // Start spawning a specific group
+			yield return StartCoroutine(SpawnEnemyGroup(group));
+			
+        }
+    }
+    
+    // Coroutine to spawn a single group of enemies
+    private IEnumerator SpawnEnemyGroup(EnemyGroup group)
+    {
+        if (group.enemyPrefab == null)
+        {
+            Debug.LogError("Enemy prefab is not assigned in one of the groups!");
+            yield break;
+        }
+        
+        Debug.Log($"Spawning group: {group.count}x {group.enemyPrefab.name}");
+        for (int i = 0; i < group.count; i++)
+        {
+            // Select a random spawn point
+            Transform spawnPoint = spawnSpots[Random.Range(0, spawnSpots.Count)];
+            
+            // Create the enemy instance
+            GameObject newEnemy = Instantiate(group.enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            
+            // Add the enemy to the active list for tracking
+            activeEnemies.Add(newEnemy);
+            
+            // Optionally, pass a reference of the spawner to the enemy, so it can report its death
+            EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
+         
+
+            // Wait for the interval before spawning the next enemy in the group
+            if (group.spawnInterval > 0)
             {
-                Debug.Log("Ray did not hit any object on the specified hitLayers.");
+                yield return new WaitForSeconds(group.spawnInterval);
             }
+        }
+    }
+
+    // This method should be called by enemies when they are defeated
+    public void OnEnemyDefeated(GameObject enemy)
+    {
+        if (activeEnemies.Contains(enemy))
+        {
+            activeEnemies.Remove(enemy);
         }
     }
 }
