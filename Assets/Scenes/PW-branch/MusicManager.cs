@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class MusicManager : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
-    public static MusicManager instance;
+    public static AudioManager instance;
 
-    private AudioSource audioSource;
+    private AudioSource musicSource;
+    private AudioSource sfxSource;
+
+    [Header("Ustawienia düwiÍkÛw")]
+    public AudioClip buttonClickSound;
 
     void Awake()
     {
-
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -18,23 +21,40 @@ public class MusicManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        audioSource = GetComponent<AudioSource>();
+        // Dodajemy dwa AudioSource - jeden na muzykÍ, drugi na efekty
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.loop = true;
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.loop = false;
     }
 
-    public void SetVolume(float volume)
-    {
-        if (audioSource != null)
-        {
-            audioSource.volume = volume;
-        }
-    }
-
+    // MUZYKA
     public void PlayMusic(AudioClip clip)
     {
-        if (audioSource.clip != clip)
+        if (musicSource.clip != clip)
         {
-            audioSource.clip = clip;
-            audioSource.Play();
+            musicSource.clip = clip;
+            musicSource.Play();
         }
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        musicSource.volume = volume;
+    }
+
+    // EFEKTY DèWI KOWE
+    public void PlayButtonClick()
+    {
+        if (buttonClickSound != null)
+        {
+            sfxSource.PlayOneShot(buttonClickSound, 1f);
+        }
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        sfxSource.volume = volume;
     }
 }
