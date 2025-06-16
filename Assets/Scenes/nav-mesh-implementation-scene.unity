@@ -1277,10 +1277,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1318323497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1fc098dc54916409b224b2059a89b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2461f5dfbc5f831418bd4e14386a2dfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: {fileID: 11400000, guid: fe425a4b458eda24aa37cbff5ec731c6, type: 2}
+  currentLevel: {fileID: 11400000, guid: 65a27a2582fc5174e83a692488f06d07, type: 2}
   spawnSpotLayerName: SpawnSpotLayer
 --- !u!4 &1318323499
 Transform:
