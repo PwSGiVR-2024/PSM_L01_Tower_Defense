@@ -92,9 +92,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 967090405559236170, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       propertyPath: m_Name
-      value: TrojanEnemy Variant
+      value: TroyanEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       propertyPath: m_Layer

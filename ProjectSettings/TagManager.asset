@@ -7,6 +7,7 @@ TagManager:
   - TARGET
   - Map
   - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,6 @@ TagManager:
   - walkableSpaceLayer
   - SpawnSpotLayer
   - Map
-  - 
-  - 
-  - 
   - 
   - 
   - 
