@@ -3,62 +3,73 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    // Metoda do przejœcia do wyboru poziomu
-
-
     public GameObject levelSelectPanel;
+    public GameObject triviaPanel;
+    public GameObject optionsPanel;
 
-    // Otwórz panel wyboru poziomu
+    public AudioClip mainMenuMusic; // Przypisz muzykê w Inspektorze
+
+    void Start()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlayMusic(mainMenuMusic);
+        }
+    }
+
     public void OpenLevelSelect()
     {
+        PlayClick();
         levelSelectPanel.SetActive(true);
     }
 
-    // Zamknij panel wyboru poziomu
     public void CloseLevelSelect()
     {
+        PlayClick();
         levelSelectPanel.SetActive(false);
     }
 
-    // Metoda do ³adowania sceny na podstawie numeru poziomu
     public void LoadLevel(int levelNumber)
     {
-        // Zak³adamy, ¿e nazwy scen to np. "Level1", "Level2" itd.
-        string sceneName = "Level" + levelNumber;
-        SceneManager.LoadScene(sceneName);
+        PlayClick();
+        SceneManager.LoadScene("Level" + levelNumber);
     }
-
-
-    // Metoda do otwarcia panelu Trivia
-    public GameObject triviaPanel; // przypisz w inspektorze panel z informacjami o przeciwnikach
 
     public void OpenTrivia()
     {
+        PlayClick();
         triviaPanel.SetActive(true);
     }
 
     public void CloseTrivia()
     {
+        PlayClick();
         triviaPanel.SetActive(false);
     }
 
-    // Metoda do otwarcia panelu Opcji
-    public GameObject optionsPanel; // przypisz w inspektorze panel opcji
-
     public void OpenOptions()
     {
+        PlayClick();
         optionsPanel.SetActive(true);
     }
 
     public void CloseOptions()
     {
+        PlayClick();
         optionsPanel.SetActive(false);
     }
 
-    // Metoda do wyjœcia z gry
     public void QuitGame()
     {
-        Debug.Log("Wyjœcie z gry");
+        PlayClick();
         Application.Quit();
+    }
+
+    private void PlayClick()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlayButtonClick();
+        }
     }
 }
