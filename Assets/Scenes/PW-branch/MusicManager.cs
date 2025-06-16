@@ -7,7 +7,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource musicSource;
     private AudioSource sfxSource;
 
-    [Header("Ustawienia düwiÍkÛw")]
+    [Header("Audio Clips")]
+    public AudioClip defaultMusicClip;
     public AudioClip buttonClickSound;
 
     void Awake()
@@ -21,17 +22,30 @@ public class AudioManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Dodajemy dwa AudioSource - jeden na muzykÍ, drugi na efekty
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.loop = true;
+        musicSource.playOnAwake = false;
+        musicSource.volume = 1f;  // domyúlna g≥oúnoúÊ muzyki
 
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.loop = false;
+        sfxSource.playOnAwake = false;
+        sfxSource.volume = 1f;    // domyúlna g≥oúnoúÊ efektÛw
     }
 
-    // MUZYKA
+
+    void Start()
+    {
+        if (defaultMusicClip != null)
+        {
+            PlayMusic(defaultMusicClip);
+        }
+    }
+
     public void PlayMusic(AudioClip clip)
     {
+        if (clip == null) return;
+
         if (musicSource.clip != clip)
         {
             musicSource.clip = clip;
@@ -39,22 +53,37 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetMusicVolume(float volume)
+    public void PlayDefaultMusic()
     {
-        musicSource.volume = volume;
+        PlayMusic(defaultMusicClip);
     }
 
-    // EFEKTY DèWI KOWE
-    public void PlayButtonClick()
+    public void SetMusicVolume(float volume)
     {
-        if (buttonClickSound != null)
-        {
-            sfxSource.PlayOneShot(buttonClickSound, 1f);
-        }
+        if (musicSource != null) musicSource.volume = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
-        sfxSource.volume = volume;
+        if (sfxSource != null) sfxSource.volume = volume;
     }
+
+    public void PlayButtonClick()
+    {
+        if (buttonClickSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(buttonClickSound);
+        }
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicSource != null ? musicSource.volume : 1f;
+    }
+
+    public float GetSFXVolume()
+    {
+        return sfxSource != null ? sfxSource.volume : 1f;
+    }
+
 }
