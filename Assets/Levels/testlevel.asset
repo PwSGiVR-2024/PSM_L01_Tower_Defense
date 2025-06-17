@@ -14,10 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: test level
   waves:
-  - waveName: first
+  - waveName: 1
+    delayBeforeWave: 0
+    delayBeforeNextWave: 4.87
+    enemyGroups:
+    - enemyPrefab: {fileID: 5659474764336820107, guid: 91983fd35d77efb459c6596f1e238d72, type: 3}
+      count: 2
+      spawnInterval: 0.1
+  - waveName: 2
     delayBeforeWave: 0.2
     delayBeforeNextWave: 0.5
     enemyGroups:
-    - enemyPrefab: {fileID: 5659474764336820107, guid: 91983fd35d77efb459c6596f1e238d72, type: 3}
-      count: 30
+    - enemyPrefab: {fileID: 3556483218059778949, guid: 68a1fdb277bb87e4babb416b115177ba, type: 3}
+      count: 2
       spawnInterval: 0.1

@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float speed = 5f;
-    private float normalSpeed;
+    public float baseSpeed = 5f;
 
+    private NavMeshAgent agent;
     private Renderer rend;
     private Color originalColor;
 
@@ -13,15 +14,19 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
-        normalSpeed = speed;
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = baseSpeed;
+
         rend = GetComponentInChildren<Renderer>();
-        originalColor = rend.material.color;
+        if (rend != null)
+            originalColor = rend.material.color;
     }
 
     void Update()
     {
-        // Prosty ruch do przodu
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        // Jeœli masz ustawiony destination gdzie indziej, to nic tu nie rób
+        // Jeœli chcesz testowo, to np. poruszaj siê do przodu:
+        // agent.destination = transform.position + transform.forward * 10f;
     }
 
     public void ApplySlow(float slowFactor, float duration)
@@ -29,25 +34,39 @@ public class EnemyMovement : MonoBehaviour
         if (slowCoroutine != null)
         {
             StopCoroutine(slowCoroutine);
-            rend.material.color = originalColor; // reset koloru
-            speed = normalSpeed;
+            ResetSpeed();
         }
+
         slowCoroutine = StartCoroutine(SlowEffect(slowFactor, duration));
     }
 
     IEnumerator SlowEffect(float slowFactor, float duration)
     {
-        speed = normalSpeed * slowFactor;
+        if (agent != null)
+        {
+            agent.speed = baseSpeed * slowFactor;
+        }
+
         float elapsed = 0f;
         while (elapsed < duration)
         {
             float t = Mathf.PingPong(Time.time * 3f, 1f);
-            rend.material.color = Color.Lerp(originalColor, Color.blue, t);
+            if (rend != null)
+                rend.material.color = Color.Lerp(originalColor, Color.blue, t);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
-        rend.material.color = originalColor;
-        speed = normalSpeed;
+
+        ResetSpeed();
+    }
+
+    private void ResetSpeed()
+    {
+        if (agent != null)
+            agent.speed = baseSpeed;
+
+        if (rend != null)
+            rend.material.color = originalColor;
     }
 }

@@ -6,7 +6,7 @@ public class AreaAttackController : MonoBehaviour
     public GameObject aimingCirclePrefab;
     public GameObject explosionEffectPrefab; 
 
-    public LayerMask enemyLayer;
+    public LayerMask EnemyLayer;
     public LayerMask groundLayer;
     public float attackRadius = 5f;
     public float attackDamage = 50f;
@@ -90,7 +90,7 @@ public class AreaAttackController : MonoBehaviour
             Instantiate(explosionEffectPrefab, effectPosition, Quaternion.identity);
         }
 
-        Collider[] enemiesInRange = Physics.OverlapSphere(aimingCircle.transform.position, attackRadius, enemyLayer);
+        Collider[] enemiesInRange = Physics.OverlapSphere(aimingCircle.transform.position, attackRadius, EnemyLayer);
 
         foreach (Collider enemy in enemiesInRange)
         {

@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3859085615391139878, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 6715670295403428958, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.16
@@ -158,7 +162,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6715670295403428958, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7882257912676677201}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3894782415490015470}
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5838178321777441341}
   m_SourcePrefab: {fileID: 100100000, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
 --- !u!4 &2577843523927483855 stripped
 Transform:
@@ -170,3 +180,35 @@ NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 3859085615391139878, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
   m_PrefabInstance: {fileID: 9148092373787793809}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5659474764336820107 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+  m_PrefabInstance: {fileID: 9148092373787793809}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3894782415490015470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659474764336820107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bec0fdb41d19e499a28796bdd56617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  damageToBase: 20
+--- !u!114 &-5838178321777441341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659474764336820107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186f641738de81e42abc63a3d17e0b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSpeed: 5

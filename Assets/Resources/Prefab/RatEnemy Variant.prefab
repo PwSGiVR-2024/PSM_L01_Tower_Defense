@@ -150,10 +150,48 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6715670295403428958, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1481141651686665012}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3117481685162330901}
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8689223334488074048}
   m_SourcePrefab: {fileID: 100100000, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
 --- !u!4 &1668860207857765184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715670295403428958, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
   m_PrefabInstance: {fileID: 5339616631528912670}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8819405772511101188 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+  m_PrefabInstance: {fileID: 5339616631528912670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3117481685162330901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8819405772511101188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bec0fdb41d19e499a28796bdd56617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  damageToBase: 1
+--- !u!114 &-8689223334488074048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8819405772511101188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186f641738de81e42abc63a3d17e0b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSpeed: 5

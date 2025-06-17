@@ -6,7 +6,7 @@ public class SlowZoneController : MonoBehaviour
 {
     public GameObject aimingCirclePrefab;
     public LayerMask groundLayer;
-    public LayerMask enemyLayer;
+    public LayerMask EnemyLayer;
 
     public GameObject slowEffectZonePrefab; // prefab z efektem wizualnym, np. particle system
 
@@ -90,7 +90,7 @@ public class SlowZoneController : MonoBehaviour
         GameObject slowEffect = Instantiate(slowEffectZonePrefab, spawnPos, Quaternion.identity);
 
         // Spowalnianie przeciwników w strefie
-        Collider[] enemies = Physics.OverlapSphere(spawnPos, radius, enemyLayer);
+        Collider[] enemies = Physics.OverlapSphere(spawnPos, radius, EnemyLayer);
 
         foreach (Collider enemy in enemies)
         {

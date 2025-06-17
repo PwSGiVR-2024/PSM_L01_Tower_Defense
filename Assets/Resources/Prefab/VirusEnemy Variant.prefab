@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       propertyPath: m_Name
-      value: VirusEnemyPrefab Variant
+      value: VirusEnemy Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       propertyPath: m_Layer
@@ -94,8 +94,46 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6715670295403428958, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4803036073347372643}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8129546955533744381}
+    - targetCorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6473135103501709465}
   m_SourcePrefab: {fileID: 100100000, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+--- !u!1 &3556483218059778949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3494498485082895898, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+  m_PrefabInstance: {fileID: 82711308894924191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8129546955533744381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556483218059778949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bec0fdb41d19e499a28796bdd56617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  damageToBase: 1
+--- !u!114 &-6473135103501709465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556483218059778949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186f641738de81e42abc63a3d17e0b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!195 &3795374041387468217 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 3859085615391139878, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
