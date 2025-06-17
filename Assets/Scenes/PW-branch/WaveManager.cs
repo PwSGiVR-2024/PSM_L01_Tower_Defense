@@ -8,58 +8,57 @@ public class WaveManager : MonoBehaviour
     public Text waveText;                    // UI do pokazywania fali, przypisz w inspektorze
     public GameObject victoryPanel;          // panel zwyciêstwa, przypisz w inspektorze
 
-    private int currentWaveIndex = 0;
+    private int currentWaveIndex = -1;
 
     void Start()
     {
         victoryPanel.SetActive(false);
-        StartCoroutine(StartNextWave());
+        StartCoroutine(StartAllWaves());
     }
 
-    IEnumerator StartNextWave()
+    IEnumerator StartAllWaves()
     {
-        while (currentWaveIndex < levelDefinition.waves.Count)
+        for (int i = 0; i < levelDefinition.waves.Count; i++)
         {
+            currentWaveIndex = i;
             UpdateWaveText();
 
-            Wave currentWave = levelDefinition.waves[currentWaveIndex];
+            Wave currentWave = levelDefinition.waves[i];
 
             if (currentWave.delayBeforeWave > 0)
                 yield return new WaitForSeconds(currentWave.delayBeforeWave);
 
-            // Tu spawnuj przeciwników (musisz dodaæ w³asn¹ implementacjê)
-            // np. StartCoroutine(SpawnEnemies(currentWave));
+            // Tutaj wywo³aj swoj¹ metodê spawnu przeciwników dla currentWave
+            // StartCoroutine(SpawnEnemies(currentWave));
 
-            yield return StartCoroutine(WaitForEnemiesDefeated());
-
+            // Zacznij delay do nastêpnej fali (nie czekaj na wyczyszczenie przeciwników)
             if (currentWave.delayBeforeNextWave > 0)
                 yield return new WaitForSeconds(currentWave.delayBeforeNextWave);
-
-            currentWaveIndex++;
-            UpdateWaveText(); // wa¿ne, ¿eby zaktualizowaæ po inkrementacji
         }
 
-        ShowVictory();
+        // Po ostatniej fali nie ma nastêpnej - wyœwietl komunikat
+        waveText.text = "All waves completed!";
+
+        // Tu ewentualnie mo¿esz sprawdziæ czy wszystkich przeciwników pokonano:
+        StartCoroutine(WaitForAllEnemiesDefeatedThenVictory());
     }
 
     void UpdateWaveText()
     {
         if (waveText != null)
         {
-            if (currentWaveIndex < levelDefinition.waves.Count)
-                waveText.text = $"Wave {currentWaveIndex + 1}/{levelDefinition.waves.Count}";
-            else
-                waveText.text = "All waves completed!";
+            waveText.text = $"Wave {currentWaveIndex + 1}/{levelDefinition.waves.Count}";
         }
     }
 
-    IEnumerator WaitForEnemiesDefeated()
+    IEnumerator WaitForAllEnemiesDefeatedThenVictory()
     {
-        // Czekaj a¿ wrogowie znikn¹
         while (GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
         {
             yield return null;
         }
+
+        ShowVictory();
     }
 
     void ShowVictory()

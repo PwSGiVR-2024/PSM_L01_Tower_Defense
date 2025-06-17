@@ -33,7 +33,7 @@ public class MainMenuController : MonoBehaviour
     public void LoadLevel(int levelNumber)
     {
         PlayClick();
-        SceneManager.LoadScene("Level" + levelNumber);
+        SceneManager.LoadScene("nav-mesh-implementation-scene");
     }
 
     public void OpenTrivia()

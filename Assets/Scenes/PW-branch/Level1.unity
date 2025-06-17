@@ -3686,9 +3686,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimingCirclePrefab: {fileID: 6149749091466153805, guid: e4e8360ad64db564e824ede460e5de61, type: 3}
   explosionEffectPrefab: {fileID: 3533129757878343282, guid: 7a726cad2bb677c42b7292ca0ef83420, type: 3}
-  enemyLayer:
+  EnemyLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -4758,9 +4758,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  enemyLayer:
+  EnemyLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   slowEffectZonePrefab: {fileID: 3968583081313814134, guid: b510138c483c95c47b15ff0f989f2a00, type: 3}
   radius: 5
   slowAmount: 0.5

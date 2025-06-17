@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/PW-branch/Main_Menu.unity
     guid: 65d30f030d541fa42aa5bdadc515dc9d
   - enabled: 1
-    path: Assets/Scenes/PW-branch/Level1.unity
-    guid: e51acd0a2bbdddc4d86aabb02ee43514
+    path: Assets/Scenes/nav-mesh-implementation-scene.unity
+    guid: af64c66845c7e7f469ea1bb9958cee31
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
