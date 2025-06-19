@@ -5,26 +5,17 @@ public class DamageControler : MonoBehaviour
 {
     [SerializeField] private int reward = 10;
     [SerializeField] private float Hp = 100f;
-    [SerializeField] private string projectileTag = "Bullet";
     [SerializeField] private float destroyDelay = 0f;
+    public int damageToBase = 1;
 
     private bool isInvulnerable = false;
+    private Renderer rend;
+    private Color originalColor;
 
-    private void OnTriggerEnter(Collider other)
+    void Start()
     {
-        if (other.CompareTag(projectileTag))
-        {
-            if (!isInvulnerable)
-            {
-                Bullet bullet = other.GetComponent<Bullet>();
-                if (bullet != null)
-                {
-                    Debug.Log("Pocisk trafi³ w przeciwnika!");
-                    TakeDamage(bullet.GetDamage());
-                }
-            }
-            Destroy(other.gameObject);
-        }
+        rend = GetComponentInChildren<Renderer>();
+        originalColor = rend.material.color;
     }
 
     public void TakeDamage(float damage)
@@ -32,7 +23,9 @@ public class DamageControler : MonoBehaviour
         if (isInvulnerable) return;
 
         Debug.Log($"[DEBUG] Przeciwnik {gameObject.name} otrzymuje {damage} obra¿eñ");
+
         Hp -= damage;
+        StartCoroutine(DamageFlash());
 
         if (Hp <= 0)
         {
@@ -55,14 +48,21 @@ public class DamageControler : MonoBehaviour
 
     private void Die()
     {
-       
-
         Debug.Log("Przeciwnik zniszczony!");
         Destroy(gameObject, destroyDelay);
-        
+
         if (EventManager.Instance != null)
         {
             EventManager.Instance.EnemyKilled(reward);
         }
     }
+
+    IEnumerator DamageFlash()
+    {
+        rend.material.color = Color.red;
+        yield return new WaitForSeconds(1f);
+        rend.material.color = originalColor;
+    }
+
+
 }

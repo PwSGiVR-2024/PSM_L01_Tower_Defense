@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class SlowShot : MonoBehaviour
 {
-    [SerializeField] private string enemyTag = "Enemy";
+    public LayerMask enemyLayer;
     [SerializeField] private float triggerDistance = 10f;
     [SerializeField] private float fireRate = 2.5f;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] private Transform shootPoint;
 
     private float lastShotTime = 0f;
     private Transform currentTarget;
@@ -28,17 +28,17 @@ public class SlowShot : MonoBehaviour
 
     private void FindNearestEnemy()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        Collider[] hits = Physics.OverlapSphere(transform.position, triggerDistance, enemyLayer);
         float closestDistance = Mathf.Infinity;
         Transform nearest = null;
 
-        foreach (GameObject enemy in enemies)
+        foreach (Collider hit in hits)
         {
-            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
             if (dist < closestDistance)
             {
                 closestDistance = dist;
-                nearest = enemy.transform;
+                nearest = hit.transform;
             }
         }
 
@@ -47,13 +47,22 @@ public class SlowShot : MonoBehaviour
 
     private void ShootAt(Transform target)
     {
-        if (bulletPrefab == null || bulletSpawnPoint == null || target == null) return;
+        if (bulletPrefab == null || shootPoint == null || target == null)
+        {
+            Debug.LogWarning("Brakuje prefab pocisku / punktu strza³u / celu.");
+            return;
+        }
 
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
         SlowDown bulletScript = bullet.GetComponent<SlowDown>();
         if (bulletScript != null)
         {
             bulletScript.SetTarget(target);
+            bulletScript.enemyLayer = enemyLayer; // Przekazujemy warstwê do AOE
+        }
+        else
+        {
+            Debug.LogWarning("Brak komponentu SlowDown na prefabie pocisku!");
         }
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class tower_builder : MonoBehaviour
+public class tower_builder_2 : MonoBehaviour
 {
-    [SerializeField] private int towerCost = 100;
+    [SerializeField] private int towerCost = 150;
     [SerializeField] private GameObject towerPrefab;
     [SerializeField] private build_controller buildController;
     [SerializeField] private GameObject towerMenu;
@@ -24,7 +24,7 @@ public class tower_builder : MonoBehaviour
                 if (buildPosition != null)
                 {
                     buildController.Build(towerPrefab, buildPosition);
-                    Debug.Log("Wie¿a 0 zbudowana.");
+                    Debug.Log("Wie¿a 2 zbudowana.");
                 }
                 else
                 {

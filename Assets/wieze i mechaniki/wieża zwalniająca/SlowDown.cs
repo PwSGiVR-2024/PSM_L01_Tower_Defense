@@ -1,16 +1,20 @@
 using UnityEngine;
+using UnityEngine.AI;
+using System.Collections;
 
 public class SlowDown : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    [SerializeField] private float slowPercentage = 0.25f;
-    [SerializeField] private float lifetime = 5f;
+    [SerializeField] private float explosionRadius = 3f;
+    [SerializeField] private float slowFactor = 0.5f;
+    [SerializeField] private float slowDuration = 3f;
+    [SerializeField] private float lifetime = 10f;
+    public LayerMask enemyLayer;
 
     private Transform target;
 
     public void SetTarget(Transform targetTransform)
     {
-        Debug.Log("[SlowDown] Cel ustawiony: " + targetTransform.name);
         target = targetTransform;
     }
 
@@ -33,15 +37,51 @@ public class SlowDown : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[SlowDown] Zderzenie z {other.name}");
+        // SprawdŸ, czy to przeciwnik i czy to nasz cel
+        if (((1 << other.gameObject.layer) & enemyLayer) == 0) return;
+        if (other.transform != target) return;
 
-        MoveLeftRight movement = other.GetComponent<MoveLeftRight>();
-        if (movement != null)
+        Debug.Log($"Slow pocisk trafi³ {other.name} i wybucha!");
+
+        ExplodeSlow();
+        Destroy(gameObject);
+    }
+
+    private void ExplodeSlow()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
+        int slowedCount = 0;
+
+        foreach (Collider hit in colliders)
         {
-            Debug.Log("[SlowDown] Znalaz³em MoveLeftRight!");
-            movement.ReduceSpeedByPercentage(slowPercentage);
+            NavMeshAgent agent = hit.GetComponent<NavMeshAgent>();
+            if (agent != null)
+            {
+                StartCoroutine(SlowAgent(agent));
+                slowedCount++;
+            }
         }
 
-        Destroy(gameObject);
+        Debug.Log($"Spowolnionych przeciwników: {slowedCount}");
+    }
+
+    private IEnumerator SlowAgent(NavMeshAgent agent)
+    {
+        float originalSpeed = agent.speed;
+        agent.speed = originalSpeed * slowFactor;
+
+        yield return new WaitForSeconds(slowDuration);
+
+        // Przywróæ prêdkoœæ, ale tylko jeœli agent nadal istnieje
+        if (agent != null)
+        {
+            agent.speed = originalSpeed;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerWallet : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerWallet : MonoBehaviour
     [SerializeField] private int startingMoney = 500;
     private int currentMoney;
 
-    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private Text moneyText;
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class PlayerWallet : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         if (EventManager.Instance != null)
             EventManager.Instance.OnEnemyKilled += AddMoney;
@@ -65,7 +66,7 @@ public class PlayerWallet : MonoBehaviour
     {
         if (moneyText != null)
         {
-            moneyText.text = $"Money: {currentMoney}";
+            moneyText.text = currentMoney.ToString();
         }
         else
         {

@@ -1,78 +1,68 @@
 using UnityEngine;
 
-public class Tower_fast_shoot : MonoBehaviour
+public class Tower_Fast_Shoot : MonoBehaviour
 {
-    private Transform wrog;
-    private Transform player;
-    private GameObject prefab;
-    private Transform bulletSpawnPoint;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float triggerDistance = 10f;
+    [SerializeField] private float fireRate = 2.5f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform bulletSpawnPoint;
 
-    [SerializeField] private int odlegloscTrigger = 10; // Odleg³oœæ, w której broñ ma strzelaæ
-    [SerializeField] private float fireRate = 0.2f; // Czas miêdzy strza³ami
-    private float lastShotTime = 0f; // Czas ostatniego strza³u
-
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("boom")?.transform;
-        prefab = Resources.Load<GameObject>("BulletLite_01");
-        bulletSpawnPoint = GameObject.FindGameObjectWithTag("boom")?.transform;
-
-        if (prefab == null)
-        {
-            Debug.LogError("Nie znaleziono prefabrykatu pocisku!");
-        }
-        if (bulletSpawnPoint == null)
-        {
-            Debug.LogError("Nie znaleziono punktu startowego pocisku!");
-        }
-
-        FindEnemy();
-    }
+    private float lastShotTime = 0f;
+    private Transform currentTarget;
 
     void Update()
     {
-        if (wrog != null)
-        {
-            float distanceToEnemy = Vector3.Distance(wrog.position, player.position);
+        FindNearestEnemy();
 
-            if (distanceToEnemy <= odlegloscTrigger && Time.time - lastShotTime >= fireRate)
+        if (currentTarget != null)
+        {
+            float distance = Vector3.Distance(transform.position, currentTarget.position);
+            if (distance <= triggerDistance && Time.time - lastShotTime >= fireRate)
             {
-                Shoot();
+                ShootAt(currentTarget);
                 lastShotTime = Time.time;
             }
         }
-        else
-        {
-            FindEnemy();
-        }
     }
 
-    private void Shoot()
+    private void FindNearestEnemy()
     {
-        if (wrog == null || prefab == null || bulletSpawnPoint == null) return;
+        Collider[] hits = Physics.OverlapSphere(transform.position, triggerDistance, enemyLayer);
+        float closestDistance = Mathf.Infinity;
+        Transform nearest = null;
 
-        Vector3 spawnPosition = bulletSpawnPoint.position;
-        Quaternion spawnRotation = bulletSpawnPoint.rotation;
+        foreach (Collider hit in hits)
+        {
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                nearest = hit.transform;
+            }
+        }
 
-        GameObject bulletInstance = Instantiate(prefab, spawnPosition, spawnRotation);
+        currentTarget = nearest;
+    }
 
-        Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
+    private void ShootAt(Transform target)
+    {
+        if (bulletPrefab == null || bulletSpawnPoint == null || target == null)
+        {
+            Debug.LogWarning("Brakuje prefab bullet / punktu spawn / celu.");
+            return;
+        }
+
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        Bullet bulletScript = bullet.GetComponent<Bullet>(); // <<< upewnij siê ¿e to Bullet!
         if (bulletScript != null)
         {
-            bulletScript.SetTarget(wrog.position);
-        }
-    }
-
-    private void FindEnemy()
-    {
-        GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemyObject != null)
-        {
-            wrog = enemyObject.transform;
+            bulletScript.SetTarget(target);
+            Debug.Log($"Pocisk utworzony i cel ustawiony na: {target.name}");
         }
         else
         {
-            wrog = null;
+            Debug.LogWarning("Skrypt Bullet nie znaleziony na prefabie!");
         }
     }
 }

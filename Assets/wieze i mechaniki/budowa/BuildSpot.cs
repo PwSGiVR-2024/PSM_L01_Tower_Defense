@@ -4,8 +4,8 @@ using UnityEngine.EventSystems;
 public class BuildSpot : MonoBehaviour
 {
     [Header("UI Menu Obiektu")]
-    [SerializeField] private GameObject buildMenu;         // pe³ne menu budowy
-    [SerializeField] private GameObject hoverIndicator;    // np. ikonka plusa
+    [SerializeField] private GameObject buildMenu;
+    [SerializeField] private GameObject hoverIndicator;
 
     private void Start()
     {
@@ -35,6 +35,16 @@ public class BuildSpot : MonoBehaviour
             if (buildMenu != null)
             {
                 buildMenu.SetActive(true);
+
+                // Przypisz aktywne miejsce budowy do ka¿dego buildera
+                foreach (var builder in buildMenu.GetComponentsInChildren<tower_builder>())
+                    builder.SetActiveBuildSpot(transform);
+
+                foreach (var builder in buildMenu.GetComponentsInChildren<tower_builder_1>())
+                    builder.SetActiveBuildSpot(transform);
+
+                foreach (var builder in buildMenu.GetComponentsInChildren<tower_builder_2>())
+                    builder.SetActiveBuildSpot(transform);
             }
         }
     }

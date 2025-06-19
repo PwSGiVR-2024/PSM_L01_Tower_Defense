@@ -6,6 +6,7 @@ public class Explode : MonoBehaviour
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private float damage = 100f;
     [SerializeField] private float lifetime = 10f;
+    [SerializeField] private LayerMask enemyLayer;  // warstwa przeciwników
 
     private Transform target;
 
@@ -16,7 +17,7 @@ public class Explode : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, lifetime); // awaryjne zniszczenie pocisku
+        Destroy(gameObject, lifetime);
     }
 
     private void Update()
@@ -33,9 +34,16 @@ public class Explode : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"target {other.name} hitted");
-        // tylko jeœli uderzy³o dok³adnie w cel
+        // Sprawdzamy czy warstwa obiektu jest w enemyLayer
+        if (((1 << other.gameObject.layer) & enemyLayer) == 0)
+        {
+            return; // ignoruj, to nie wróg
+        }
+
+        // Opcjonalnie sprawdzenie czy to nasz cel
         if (other.transform != target) return;
+
+        Debug.Log($"Bomba trafi³a: {other.name}");
 
         ExplodeNow();
         Destroy(gameObject);
@@ -43,16 +51,14 @@ public class Explode : MonoBehaviour
 
     private void ExplodeNow()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
         int hitCount = 0;
 
         foreach (Collider hit in colliders)
         {
             DamageControler dc = hit.GetComponent<DamageControler>();
             if (dc == null)
-            {
                 dc = hit.GetComponentInParent<DamageControler>();
-            }
 
             if (dc != null)
             {

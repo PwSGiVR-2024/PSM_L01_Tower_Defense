@@ -15,16 +15,28 @@ MonoBehaviour:
   levelName: test level
   waves:
   - waveName: 1
-    delayBeforeWave: 0
-    delayBeforeNextWave: 4.87
+    delayBeforeWave: 10
+    delayBeforeNextWave: 10
     enemyGroups:
     - enemyPrefab: {fileID: 5659474764336820107, guid: 91983fd35d77efb459c6596f1e238d72, type: 3}
-      count: 2
-      spawnInterval: 0.1
+      count: 10
+      spawnInterval: 2
+    - enemyPrefab: {fileID: 8819405772511101188, guid: 19758a48f12063f449f789d407b9364b, type: 3}
+      count: 20
+      spawnInterval: 1.25
+    - enemyPrefab: {fileID: 3556483218059778949, guid: 68a1fdb277bb87e4babb416b115177ba, type: 3}
+      count: 30
+      spawnInterval: 0.5
   - waveName: 2
     delayBeforeWave: 0.2
     delayBeforeNextWave: 0.5
     enemyGroups:
     - enemyPrefab: {fileID: 3556483218059778949, guid: 68a1fdb277bb87e4babb416b115177ba, type: 3}
-      count: 2
+      count: 20
       spawnInterval: 0.1
+    - enemyPrefab: {fileID: 5659474764336820107, guid: 91983fd35d77efb459c6596f1e238d72, type: 3}
+      count: 70
+      spawnInterval: 0.69
+    - enemyPrefab: {fileID: 8819405772511101188, guid: 19758a48f12063f449f789d407b9364b, type: 3}
+      count: 3
+      spawnInterval: 7.5

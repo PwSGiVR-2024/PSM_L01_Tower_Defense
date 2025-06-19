@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class SlowBoomShoot : MonoBehaviour
 {
-    [SerializeField] private string enemyTag = "Enemy";
+    [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float triggerDistance = 10f;
     [SerializeField] private float fireRate = 5f;
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] private GameObject bombaPrefab; // prefab pocisku nazywa siê "bomba"
+    [SerializeField] private Transform shootPoint;  // punkt strza³u "shootPoint"
 
     private float lastShotTime = 0f;
     private Transform currentTarget;
@@ -28,17 +28,17 @@ public class SlowBoomShoot : MonoBehaviour
 
     private void FindNearestEnemy()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        Collider[] hits = Physics.OverlapSphere(transform.position, triggerDistance, enemyLayer);
         float closestDistance = Mathf.Infinity;
         Transform nearest = null;
 
-        foreach (GameObject enemy in enemies)
+        foreach (Collider hit in hits)
         {
-            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
             if (dist < closestDistance)
             {
                 closestDistance = dist;
-                nearest = enemy.transform;
+                nearest = hit.transform;
             }
         }
 
@@ -47,18 +47,23 @@ public class SlowBoomShoot : MonoBehaviour
 
     private void ShootAt(Transform target)
     {
-        if (bulletPrefab == null || bulletSpawnPoint == null || target == null) return;
-
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-
-        Explode bulletScript = bullet.GetComponent<Explode>();
-        if (bulletScript != null)
+        if (bombaPrefab == null || shootPoint == null || target == null)
         {
-            bulletScript.SetTarget(target);
+            Debug.LogWarning("Brakuje prefab bomby / punktu shootPoint / celu.");
+            return;
+        }
+
+        GameObject bomba = Instantiate(bombaPrefab, shootPoint.position, Quaternion.identity);
+        Explode bombaScript = bomba.GetComponent<Explode>();
+        if (bombaScript != null)
+        {
+            bombaScript.SetTarget(target);
+            Debug.Log($"Bomba utworzona i cel ustawiony na: {target.name}");
         }
         else
         {
-            Debug.LogWarning("Prefab nie ma komponentu Explode!");
+            Debug.LogWarning("Skrypt Explode nie znaleziony na prefabie bomby!");
         }
     }
 }
+
