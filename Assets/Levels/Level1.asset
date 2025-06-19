@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837ec1a65a3af4f48a8840926fa3ba2a, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  levelName: 
-  waves: []
+  levelName: Level1
+  waves:
+  - waveName: 1
+    delayBeforeWave: 0
+    delayBeforeNextWave: 2
+    enemyGroups:
+    - enemyPrefab: {fileID: 919132149155446097, guid: d0ab1a24ef86d1b44a8bcf49abdd704c, type: 3}
+      count: 5
+      spawnInterval: 0.8
