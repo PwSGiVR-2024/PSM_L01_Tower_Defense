@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class AreaAttackController : MonoBehaviour
 {
     public GameObject aimingCirclePrefab;
-    public GameObject explosionEffectPrefab; 
+    public GameObject explosionEffectPrefab;
 
     public LayerMask EnemyLayer;
     public LayerMask groundLayer;
@@ -24,12 +24,10 @@ public class AreaAttackController : MonoBehaviour
     public Text cooldownText;
     public Button attackButton;
 
-    // Nazwa obiektu sfery w prefabie
-    public string sphereName = "AttackRangeSphere"; // Upewnij się, że dziecko prefab ma taką nazwę!
+    public string sphereName = "AttackRangeSphere";
 
     void Update()
     {
-        // Cooldown odliczanie
         if (currentCooldownTime > 0f)
         {
             currentCooldownTime -= Time.deltaTime;
@@ -42,7 +40,6 @@ public class AreaAttackController : MonoBehaviour
             cooldownText.text = "";
         }
 
-        // Obsługa celowania i ataku
         if (isAiming)
         {
             FollowMouse();
@@ -75,18 +72,17 @@ public class AreaAttackController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, maxRaycastDistance, groundLayer))
         {
             Vector3 targetPosition = hit.point;
-            targetPosition.y += 0.5f; // Podniesienie kółka nad ziemię
+            targetPosition.y += 0.5f;
             aimingCircle.transform.position = targetPosition;
         }
     }
 
     void ExecuteAttack()
     {
- 
         if (explosionEffectPrefab != null)
         {
             Vector3 effectPosition = aimingCircle.transform.position;
-            effectPosition.y += 0.5f; 
+            effectPosition.y += 0.5f;
             Instantiate(explosionEffectPrefab, effectPosition, Quaternion.identity);
         }
 
@@ -94,10 +90,10 @@ public class AreaAttackController : MonoBehaviour
 
         foreach (Collider enemy in enemiesInRange)
         {
-            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-            if (enemyHealth != null)
+            DamageControler damageCtrl = enemy.GetComponent<DamageControler>();
+            if (damageCtrl != null)
             {
-                enemyHealth.TakeDamage(attackDamage);
+                damageCtrl.TakeDamage(attackDamage);
             }
         }
 

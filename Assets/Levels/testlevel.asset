@@ -16,7 +16,7 @@ MonoBehaviour:
   waves:
   - waveName: 1
     delayBeforeWave: 10
-    delayBeforeNextWave: 10
+    delayBeforeNextWave: 5
     enemyGroups:
     - enemyPrefab: {fileID: 5659474764336820107, guid: 91983fd35d77efb459c6596f1e238d72, type: 3}
       count: 10

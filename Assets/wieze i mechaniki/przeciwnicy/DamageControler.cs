@@ -6,7 +6,7 @@ public class DamageControler : MonoBehaviour
     [SerializeField] private int reward = 10;
     [SerializeField] private float Hp = 100f;
     [SerializeField] private float destroyDelay = 0f;
-    public int damageToBase = 1;
+    [SerializeField] public int damageToBase = 1;
 
     private bool isInvulnerable = false;
     private Renderer rend;
