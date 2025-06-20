@@ -84,6 +84,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4728038427961681152, guid: ea4a0970f833cf94ebf02dbaec04c202, type: 3}
+      propertyPath: fireRate
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4728038427961681152, guid: ea4a0970f833cf94ebf02dbaec04c202, type: 3}
+      propertyPath: triggerDistance
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5335116701835026890, guid: ea4a0970f833cf94ebf02dbaec04c202, type: 3}
       propertyPath: m_Name
       value: towerbase

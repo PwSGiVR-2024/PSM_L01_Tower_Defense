@@ -88,6 +88,14 @@ PrefabInstance:
       propertyPath: agent
       value: 
       objectReference: {fileID: 3795374041387468217}
+    - target: {fileID: 9034430983023934217, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: Hp
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034430983023934217, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: reward
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -133,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 186f641738de81e42abc63a3d17e0b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  baseSpeed: 5
 --- !u!195 &3795374041387468217 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 3859085615391139878, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}

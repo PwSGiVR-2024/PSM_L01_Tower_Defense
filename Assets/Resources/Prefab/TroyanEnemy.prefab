@@ -156,6 +156,14 @@ PrefabInstance:
       propertyPath: agent
       value: 
       objectReference: {fileID: 5438857825069674935}
+    - target: {fileID: 9034430983023934217, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: Hp
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034430983023934217, guid: ca64d7d23d10fff4eb3dfaba1513b7e5, type: 3}
+      propertyPath: reward
+      value: 75
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
