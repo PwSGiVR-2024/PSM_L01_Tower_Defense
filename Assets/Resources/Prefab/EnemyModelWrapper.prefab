@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 967090405559236170}
   - component: {fileID: 3240886694428809700}
   - component: {fileID: 9034430983023934217}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyModelWrapper
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -136,5 +136,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reward: 10
   Hp: 100
-  projectileTag: Bullet
   destroyDelay: 0
+  damageToBase: 1
